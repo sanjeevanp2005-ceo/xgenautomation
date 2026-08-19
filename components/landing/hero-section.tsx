@@ -133,9 +133,10 @@ export function HeroSection() {
         >
           <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/bg-hero-0BnFGdr81Ifnj3WbBZoNt1KE4D5DMT.mp4" type="video/mp4" />
         </video>
-        {/* Subtle overlay to ensure text readability on the left */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60" />
+        {/* Strong dark overlay for mobile readability */}
+        <div className="absolute inset-0 bg-black/60 sm:bg-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-black/20 sm:from-black/70 sm:via-black/30 sm:to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/70" />
       </div>
 
       {/* Subtle grid lines */}
@@ -164,8 +165,8 @@ export function HeroSection() {
         ))}
       </div>
       
-      <div className="relative z-10 w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 py-28 sm:py-32 lg:py-40">
-        <div className="lg:max-w-[55%]">
+      <div className="relative z-10 w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 pt-28 pb-32 sm:py-32 lg:py-40">
+        <div className="relative z-10 w-full sm:max-w-none lg:max-w-[55%]">
         {/* Eyebrow */}
         <div 
           className={`mb-6 sm:mb-8 transition-all duration-700 ${
@@ -173,7 +174,7 @@ export function HeroSection() {
           }`}
         >
           <span className="inline-flex items-center gap-2 sm:gap-3 text-xs sm:text-sm font-mono text-white/60">
-            <span className="w-6 sm:w-8 h-px bg-white/30" />
+            <span className="w-6 sm:w-8 h-px bg-white/30 shrink-0" />
             Private AI agents, deployed on your own Azure cloud
           </span>
         </div>
@@ -181,7 +182,7 @@ export function HeroSection() {
         {/* Main headline */}
         <div className="mb-8">
           <h1 
-            className={`text-left text-[clamp(1.75rem,8vw,7rem)] font-display leading-[0.95] tracking-tight text-white transition-all duration-1000 ${
+            className={`text-left text-[clamp(2.2rem,8vw,7rem)] font-display leading-[0.95] tracking-tight text-white transition-all duration-1000 ${
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
@@ -196,7 +197,7 @@ export function HeroSection() {
         </div>
 
         {/* Hero CTA buttons */}
-        <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-3 sm:gap-4 mb-12">
+        <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-3 sm:gap-4 mb-10 sm:mb-12">
           <a
             href="https://cal.com/sanjeevanxgenautomations-jgbcm1/30min"
             target="_blank"
@@ -207,37 +208,31 @@ export function HeroSection() {
           </a>
           <a
             href="mailto:sanjeevan@xgenautomations.com"
-            className="w-full sm:w-auto px-6 py-3 rounded-full border border-white/20 text-white font-medium text-sm hover:bg-white/10 transition-all text-center break-all sm:break-normal"
+            className="w-full sm:w-auto px-6 py-3 rounded-full border border-white/20 text-white font-medium text-sm hover:bg-white/10 transition-all text-center"
           >
             sanjeevan@xgenautomations.com
           </a>
         </div>
-        </div>
-      </div>
-      
-      {/* Stats — 3 metrics static, no auto-scroll */}
-      <div 
-        className={`absolute bottom-6 sm:bottom-12 left-0 right-0 px-4 sm:px-6 lg:px-12 transition-all duration-700 delay-500 ${
-          isVisible ? "opacity-100" : "opacity-0"
-        }`}
-      >
-        <div className="max-w-[1400px] mx-auto flex items-start flex-wrap gap-6 sm:gap-10 lg:gap-20">
+
+        {/* Stats — always inline, no absolute positioning */}
+        <div 
+          className={`flex items-start flex-wrap gap-6 sm:gap-10 lg:gap-20 transition-all duration-700 delay-500 ${
+            isVisible ? "opacity-100" : "opacity-0"
+          }`}
+        >
           {[
             { value: "100%", label: "Private deployment" },
-            { value: "Fixed", label: "Quote, no hourly billing" },
-            { value: "1-2 wks", label: "Typical delivery time" },
+            { value: "Fixed", label: "No hourly billing" },
+            { value: "1-2 wks", label: "Delivery time" },
           ].map((stat) => (
             <div key={stat.label} className="flex flex-col gap-1 sm:gap-2">
               <span className="text-2xl sm:text-3xl lg:text-4xl font-display text-white">{stat.value}</span>
-              <span className="text-[10px] sm:text-xs text-white/50 leading-tight">
-                {stat.label}
-              </span>
+              <span className="text-[10px] sm:text-xs text-white/50 leading-tight">{stat.label}</span>
             </div>
           ))}
         </div>
+        </div>
       </div>
-
-      {/* Scroll indicator */}
 
     </section>
   );
