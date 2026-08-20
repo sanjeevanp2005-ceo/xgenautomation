@@ -122,14 +122,16 @@ export function HeroSection() {
   return (
     <section className="relative min-h-screen flex flex-col justify-center items-start overflow-hidden bg-black">
       {/* Background video */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 bg-black">
+        {/* Static gradient fallback — always visible, video renders on top on desktop */}
+        <div className="absolute inset-0 bg-gradient-to-br from-black via-neutral-950 to-black" />
         <video
           autoPlay
           muted
           loop
           playsInline
           aria-hidden="true"
-          className="w-full h-full object-cover object-center opacity-80"
+          className="hidden sm:block w-full h-full object-cover object-center opacity-80"
         >
           <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/bg-hero-0BnFGdr81Ifnj3WbBZoNt1KE4D5DMT.mp4" type="video/mp4" />
         </video>
@@ -138,6 +140,7 @@ export function HeroSection() {
         <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-black/20 sm:from-black/70 sm:via-black/30 sm:to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/70" />
       </div>
+
 
       {/* Subtle grid lines */}
       <div className="absolute inset-0 z-[2] overflow-hidden pointer-events-none opacity-20">

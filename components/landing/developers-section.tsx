@@ -77,16 +77,16 @@ export function DevelopersSection() {
           </h2>
         </div>
 
-        {/* Description + Features — left half only */}
+        {/* Description + Features — left half on desktop, full width on mobile */}
         <div
-          className={`max-w-[50%] transition-all duration-700 delay-100 ${
+          className={`w-full lg:max-w-[50%] transition-all duration-700 delay-100 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
           <p className="text-xl text-muted-foreground mb-12 leading-relaxed max-w-md">
             Every agent is custom-built and configured for your specific workflow — deployed on Azure AI Foundry, not a generic template.
           </p>
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {features.map((feature, index) => (
               <div
                 key={feature.title}
@@ -101,6 +101,7 @@ export function DevelopersSection() {
             ))}
           </div>
         </div>
+
       </div>
     </section>
   );

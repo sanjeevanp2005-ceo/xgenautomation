@@ -92,20 +92,17 @@ export function SecuritySection() {
         {/* Main content */}
         <div className="grid lg:grid-cols-12 gap-6">
           {/* Large visual card */}
-          <div className={`lg:col-span-7 relative p-8 lg:p-12 border border-foreground/10 min-h-[400px] overflow-hidden transition-all duration-700 ${
+          <div className={`lg:col-span-7 relative p-8 lg:p-12 border border-foreground/10 min-h-[300px] lg:min-h-[400px] overflow-hidden transition-all duration-700 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}>
-            {/* Dynamic feature image with cross-fade — desktop only */}
-            <div className="absolute inset-0 pointer-events-none items-center justify-end hidden lg:flex">
-              {securityFeatures.map((feature, index) => (
-                <img
-                  key={feature.image}
-                  src={feature.image}
-                  alt={feature.title}
-                  className="absolute h-3/4 w-3/4 object-contain object-right transition-opacity duration-500"
-                  style={{ opacity: activeFeature === index ? 0.85 : 0 }}
-                />
-              ))}
+            {/* Decorative visual — CSS only, no missing images */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+              {/* Animated glow rings */}
+              <div className="absolute top-1/2 right-8 -translate-y-1/2 w-48 h-48 lg:w-64 lg:h-64 rounded-full border border-white/5 animate-ping" style={{ animationDuration: "3s" }} />
+              <div className="absolute top-1/2 right-8 -translate-y-1/2 w-32 h-32 lg:w-48 lg:h-48 rounded-full border border-white/10 animate-ping" style={{ animationDuration: "2s", animationDelay: "0.5s" }} />
+              <div className="absolute top-1/2 right-8 -translate-y-1/2 w-20 h-20 lg:w-32 lg:h-32 rounded-full bg-white/5 flex items-center justify-center">
+                <svg className="w-8 h-8 lg:w-12 lg:h-12 text-white/30" fill="none" stroke="currentColor" strokeWidth="1" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" /></svg>
+              </div>
             </div>
             
             <div className="relative z-10">
@@ -131,6 +128,7 @@ export function SecuritySection() {
               ))}
             </div>
           </div>
+
 
           {/* Feature cards stack */}
           <div className="lg:col-span-5 flex flex-col gap-4">
