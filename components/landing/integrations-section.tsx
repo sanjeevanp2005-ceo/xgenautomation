@@ -130,6 +130,18 @@ export function IntegrationsSection() {
         }`}>
           No new software to adopt. Every solution works inside the tools you already run your business on.
         </p>
+
+        {/* CTA button */}
+        <div className={`mt-8 transition-all duration-1000 delay-200 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+          <a
+            href="https://cal.com/sanjeevanxgenautomations-jgbcm1/30min"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-black text-sm font-semibold hover:bg-white/90 transition-all shadow-lg"
+          >
+            Book a scope call →
+          </a>
+        </div>
       </div>
 
       {/* Full-width image */}

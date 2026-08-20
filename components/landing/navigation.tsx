@@ -36,7 +36,7 @@ export function Navigation() {
         className={`mx-auto transition-all duration-500 ${
           isScrolled || isMobileMenuOpen
             ? "bg-background/80 backdrop-blur-xl border border-foreground/10 rounded-2xl shadow-lg max-w-[1200px]"
-            : "bg-transparent max-w-[1400px]"
+            : "bg-black/40 backdrop-blur-sm md:bg-transparent max-w-[1400px]"
         }`}
       >
         <div 

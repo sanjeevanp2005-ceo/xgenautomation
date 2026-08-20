@@ -21,10 +21,11 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'COMPUTE - AI Agents for Distributed Computing',
-  description: 'Deploy autonomous AI agents on distributed infrastructure. Offload complex tasks to intelligent workers that run 24/7.',
+  title: 'XGEN AUTOMATIONS — Private Azure AI Agents',
+  description: 'We build private Azure AI agents deployed inside your own cloud. Fixed quote, 1–2 week delivery, 100% client ownership.',
   generator: 'v0.app',
 }
+
 
 export default function RootLayout({
   children,
