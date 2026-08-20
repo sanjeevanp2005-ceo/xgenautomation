@@ -131,7 +131,7 @@ export function HeroSection() {
           loop
           playsInline
           aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-cover object-right sm:object-center opacity-80"
+          className="absolute inset-0 w-full h-full object-cover [object-position:75%_35%] opacity-80"
         >
           <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/bg-hero-0BnFGdr81Ifnj3WbBZoNt1KE4D5DMT.mp4" type="video/mp4" />
         </video>
@@ -240,4 +240,6 @@ export function HeroSection() {
     </section>
   );
 }
+
+
 
