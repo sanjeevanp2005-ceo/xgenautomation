@@ -107,61 +107,71 @@ function BlurWord({ word, trigger }: { word: string; trigger: number }) {
 function SeamlessVideoLoop({ src }: { src: string }) {
   const video1Ref = useRef<HTMLVideoElement>(null);
   const video2Ref = useRef<HTMLVideoElement>(null);
-  const [activeVideo, setActiveVideo] = useState<1 | 2>(1);
+  const [v2Opacity, setV2Opacity] = useState(0);
+  const isTransitioningRef = useRef(false);
 
   useEffect(() => {
     const v1 = video1Ref.current;
     const v2 = video2Ref.current;
     if (!v1 || !v2) return;
 
-    const handleTimeUpdate = () => {
-      const currentV = activeVideo === 1 ? v1 : v2;
-      const nextV = activeVideo === 1 ? v2 : v1;
+    v1.play().catch(() => {});
 
-      if (currentV.duration && currentV.currentTime >= currentV.duration - 1.2) {
-        if (nextV.paused) {
-          nextV.currentTime = 0;
-          nextV.play().catch(() => {});
-          setActiveVideo(activeVideo === 1 ? 2 : 1);
-        }
+    const checkTime = () => {
+      if (isTransitioningRef.current) return;
+
+      // 2.2 seconds before Video 1 ends, trigger smooth crossfade layer
+      if (v1.duration && v1.currentTime >= v1.duration - 2.2) {
+        isTransitioningRef.current = true;
+        
+        v2.currentTime = 0.1;
+        v2.play().then(() => {
+          setV2Opacity(1);
+          
+          // Hold overlay while Video 1 loops underneath
+          setTimeout(() => {
+            setV2Opacity(0);
+            setTimeout(() => {
+              isTransitioningRef.current = false;
+            }, 1200);
+          }, 1500);
+        }).catch(() => {
+          isTransitioningRef.current = false;
+        });
       }
     };
 
-    v1.addEventListener("timeupdate", handleTimeUpdate);
-    v2.addEventListener("timeupdate", handleTimeUpdate);
-
-    return () => {
-      v1.removeEventListener("timeupdate", handleTimeUpdate);
-      v2.removeEventListener("timeupdate", handleTimeUpdate);
-    };
-  }, [activeVideo]);
+    v1.addEventListener("timeupdate", checkTime);
+    return () => v1.removeEventListener("timeupdate", checkTime);
+  }, []);
 
   return (
-    <div className="absolute inset-0 w-full h-full">
+    <div className="absolute inset-0 w-full h-full bg-black">
+      {/* Base Layer: Video 1 — always playing and visible underneath */}
       <video
         ref={video1Ref}
         autoPlay
         muted
+        loop
         playsInline
         aria-hidden="true"
         src={src}
-        className={`absolute inset-0 w-full h-full object-cover [object-position:80%_top] sm:[object-position:center_top] transition-opacity duration-1000 ${
-          activeVideo === 1 ? "opacity-85" : "opacity-0"
-        }`}
+        className="absolute inset-0 w-full h-full object-cover [object-position:80%_top] sm:[object-position:center_top] opacity-85"
       />
+      {/* Buffer Layer: Video 2 — crossfades over Video 1 during loop jump */}
       <video
         ref={video2Ref}
         muted
         playsInline
         aria-hidden="true"
         src={src}
-        className={`absolute inset-0 w-full h-full object-cover [object-position:80%_top] sm:[object-position:center_top] transition-opacity duration-1000 ${
-          activeVideo === 2 ? "opacity-85" : "opacity-0"
-        }`}
+        style={{ opacity: v2Opacity * 0.85 }}
+        className="absolute inset-0 w-full h-full object-cover [object-position:80%_top] sm:[object-position:center_top] transition-opacity duration-1000 pointer-events-none"
       />
     </div>
   );
 }
+
 
 export function HeroSection() {
   const [isVisible, setIsVisible] = useState(false);
