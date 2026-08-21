@@ -104,6 +104,65 @@ function BlurWord({ word, trigger }: { word: string; trigger: number }) {
   );
 }
 
+function SeamlessVideoLoop({ src }: { src: string }) {
+  const video1Ref = useRef<HTMLVideoElement>(null);
+  const video2Ref = useRef<HTMLVideoElement>(null);
+  const [activeVideo, setActiveVideo] = useState<1 | 2>(1);
+
+  useEffect(() => {
+    const v1 = video1Ref.current;
+    const v2 = video2Ref.current;
+    if (!v1 || !v2) return;
+
+    const handleTimeUpdate = () => {
+      const currentV = activeVideo === 1 ? v1 : v2;
+      const nextV = activeVideo === 1 ? v2 : v1;
+
+      if (currentV.duration && currentV.currentTime >= currentV.duration - 1.2) {
+        if (nextV.paused) {
+          nextV.currentTime = 0;
+          nextV.play().catch(() => {});
+          setActiveVideo(activeVideo === 1 ? 2 : 1);
+        }
+      }
+    };
+
+    v1.addEventListener("timeupdate", handleTimeUpdate);
+    v2.addEventListener("timeupdate", handleTimeUpdate);
+
+    return () => {
+      v1.removeEventListener("timeupdate", handleTimeUpdate);
+      v2.removeEventListener("timeupdate", handleTimeUpdate);
+    };
+  }, [activeVideo]);
+
+  return (
+    <div className="absolute inset-0 w-full h-full">
+      <video
+        ref={video1Ref}
+        autoPlay
+        muted
+        playsInline
+        aria-hidden="true"
+        src={src}
+        className={`absolute inset-0 w-full h-full object-cover [object-position:80%_top] sm:[object-position:center_top] transition-opacity duration-1000 ${
+          activeVideo === 1 ? "opacity-85" : "opacity-0"
+        }`}
+      />
+      <video
+        ref={video2Ref}
+        muted
+        playsInline
+        aria-hidden="true"
+        src={src}
+        className={`absolute inset-0 w-full h-full object-cover [object-position:80%_top] sm:[object-position:center_top] transition-opacity duration-1000 ${
+          activeVideo === 2 ? "opacity-85" : "opacity-0"
+        }`}
+      />
+    </div>
+  );
+}
+
 export function HeroSection() {
   const [isVisible, setIsVisible] = useState(false);
   const [wordIndex, setWordIndex] = useState(0);
@@ -123,24 +182,16 @@ export function HeroSection() {
     <section className="relative min-h-screen flex flex-col justify-center items-start overflow-hidden bg-black">
       {/* Background video */}
       <div className="absolute inset-0 z-0 bg-black overflow-hidden">
-        {/* Static gradient fallback — always visible */}
+        {/* Static gradient fallback */}
         <div className="absolute inset-0 bg-gradient-to-br from-black via-neutral-950 to-black" />
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-cover [object-position:80%_12%] sm:[object-position:center_12%] opacity-85 scale-[1.05] transition-transform duration-1000"
-        >
-          <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/bg-hero-0BnFGdr81Ifnj3WbBZoNt1KE4D5DMT.mp4" type="video/mp4" />
-        </video>
+        <SeamlessVideoLoop src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/bg-hero-0BnFGdr81Ifnj3WbBZoNt1KE4D5DMT.mp4" />
         {/* Soft overlay gradients */}
-        <div className="absolute inset-0 bg-black/20" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/35 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/70" />
-        <div className="absolute inset-0 bg-gradient-to-br from-rose-900/15 via-transparent to-transparent sm:hidden" />
+        <div className="absolute inset-0 bg-black/20 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/35 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/70 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-br from-rose-900/15 via-transparent to-transparent sm:hidden pointer-events-none" />
       </div>
+
 
 
 
