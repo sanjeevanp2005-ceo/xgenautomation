@@ -1,6 +1,30 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, memo } from "react";
+
+const PureHeroVideo = memo(function PureHeroVideo() {
+  return (
+    <div className="absolute inset-0 z-0 bg-black overflow-hidden pointer-events-none">
+      <div className="absolute inset-0 bg-gradient-to-br from-black via-neutral-950 to-black" />
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        aria-hidden="true"
+        className="absolute inset-0 w-full h-full object-cover [object-position:80%_top] sm:[object-position:center_top] opacity-85"
+      >
+        <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/bg-hero-0BnFGdr81Ifnj3WbBZoNt1KE4D5DMT.mp4" type="video/mp4" />
+      </video>
+      <div className="absolute inset-0 bg-black/20" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/35 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/70" />
+      <div className="absolute inset-0 bg-gradient-to-br from-rose-900/15 via-transparent to-transparent sm:hidden" />
+    </div>
+  );
+});
+
+
 
 const words = ["automate", "extract", "verify", "deploy"];
 
@@ -104,75 +128,6 @@ function BlurWord({ word, trigger }: { word: string; trigger: number }) {
   );
 }
 
-function SeamlessVideoLoop({ src }: { src: string }) {
-  const video1Ref = useRef<HTMLVideoElement>(null);
-  const video2Ref = useRef<HTMLVideoElement>(null);
-  const [v2Opacity, setV2Opacity] = useState(0);
-  const isTransitioningRef = useRef(false);
-
-  useEffect(() => {
-    const v1 = video1Ref.current;
-    const v2 = video2Ref.current;
-    if (!v1 || !v2) return;
-
-    v1.play().catch(() => {});
-
-    const checkTime = () => {
-      if (isTransitioningRef.current) return;
-
-      // 2.2 seconds before Video 1 ends, trigger smooth crossfade layer
-      if (v1.duration && v1.currentTime >= v1.duration - 2.2) {
-        isTransitioningRef.current = true;
-        
-        v2.currentTime = 0.1;
-        v2.play().then(() => {
-          setV2Opacity(1);
-          
-          // Hold overlay while Video 1 loops underneath
-          setTimeout(() => {
-            setV2Opacity(0);
-            setTimeout(() => {
-              isTransitioningRef.current = false;
-            }, 1200);
-          }, 1500);
-        }).catch(() => {
-          isTransitioningRef.current = false;
-        });
-      }
-    };
-
-    v1.addEventListener("timeupdate", checkTime);
-    return () => v1.removeEventListener("timeupdate", checkTime);
-  }, []);
-
-  return (
-    <div className="absolute inset-0 w-full h-full bg-black">
-      {/* Base Layer: Video 1 — always playing and visible underneath */}
-      <video
-        ref={video1Ref}
-        autoPlay
-        muted
-        loop
-        playsInline
-        aria-hidden="true"
-        src={src}
-        className="absolute inset-0 w-full h-full object-cover [object-position:80%_top] sm:[object-position:center_top] opacity-85"
-      />
-      {/* Buffer Layer: Video 2 — crossfades over Video 1 during loop jump */}
-      <video
-        ref={video2Ref}
-        muted
-        playsInline
-        aria-hidden="true"
-        src={src}
-        style={{ opacity: v2Opacity * 0.85 }}
-        className="absolute inset-0 w-full h-full object-cover [object-position:80%_top] sm:[object-position:center_top] transition-opacity duration-1000 pointer-events-none"
-      />
-    </div>
-  );
-}
-
-
 export function HeroSection() {
   const [isVisible, setIsVisible] = useState(false);
   const [wordIndex, setWordIndex] = useState(0);
@@ -190,17 +145,9 @@ export function HeroSection() {
 
   return (
     <section className="relative min-h-screen flex flex-col justify-center items-start overflow-hidden bg-black">
-      {/* Background video */}
-      <div className="absolute inset-0 z-0 bg-black overflow-hidden">
-        {/* Static gradient fallback */}
-        <div className="absolute inset-0 bg-gradient-to-br from-black via-neutral-950 to-black" />
-        <SeamlessVideoLoop src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/bg-hero-0BnFGdr81Ifnj3WbBZoNt1KE4D5DMT.mp4" />
-        {/* Soft overlay gradients */}
-        <div className="absolute inset-0 bg-black/20 pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/35 to-transparent pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/70 pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-br from-rose-900/15 via-transparent to-transparent sm:hidden pointer-events-none" />
-      </div>
+      {/* Background video — memoized to prevent re-renders when wordIndex changes */}
+      <PureHeroVideo />
+
 
 
 
