@@ -122,8 +122,8 @@ export function HeroSection() {
   return (
     <section className="relative min-h-screen flex flex-col justify-center items-start overflow-hidden bg-black">
       {/* Background video */}
-      <div className="absolute inset-0 z-0 bg-black">
-        {/* Static gradient fallback — always visible, video renders on top on desktop */}
+      <div className="absolute inset-0 z-0 bg-black overflow-hidden">
+        {/* Static gradient fallback — always visible */}
         <div className="absolute inset-0 bg-gradient-to-br from-black via-neutral-950 to-black" />
         <video
           autoPlay
@@ -131,15 +131,17 @@ export function HeroSection() {
           loop
           playsInline
           aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-cover [object-position:75%_35%] opacity-80"
+          className="absolute inset-0 w-full h-full object-cover [object-position:80%_12%] sm:[object-position:center_12%] opacity-85 scale-[1.05] transition-transform duration-1000"
         >
           <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/bg-hero-0BnFGdr81Ifnj3WbBZoNt1KE4D5DMT.mp4" type="video/mp4" />
         </video>
-        {/* Strong dark overlay for mobile readability */}
+        {/* Soft overlay gradients */}
         <div className="absolute inset-0 bg-black/20" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/35 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/70" />
+        <div className="absolute inset-0 bg-gradient-to-br from-rose-900/15 via-transparent to-transparent sm:hidden" />
       </div>
+
 
 
       {/* Subtle grid lines */}
